@@ -50,8 +50,8 @@ No installation required. Just download and run:
 # Download the script
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YOUR_USERNAME/SystemDiagnostic/main/SystemDiagnostic.ps1" -OutFile "SystemDiagnostic.ps1"
 
-# Run it
-.\SystemDiagnostic.ps1
+# Run it with elevated permissions
+.\SystemDiagnostic.ps1 -Elevate
 ```
 
 Or clone the repository:
