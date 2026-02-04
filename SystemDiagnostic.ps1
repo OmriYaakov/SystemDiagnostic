@@ -452,7 +452,11 @@ function Get-DiskHealthDiagnostics {
             $sevList += if ($d.HealthStatus -eq 'Warning') { 'yellow' } else { 'red' }
         }
         if ($null -ne $d.Temperature -and $d.Temperature -gt 0) {
-            $sevList += Get-Severity -Value $d.Temperature -YellowThreshold 45 -RedThreshold 55
+            # SSDs: safe up to 70°C, throttle around 70-85°C. HDDs: warning at 50°C+
+            $isHDD = $d.MediaType -eq 'HDD'
+            $tempYellow = if ($isHDD) { 50 } else { 65 }
+            $tempRed = if ($isHDD) { 60 } else { 75 }
+            $sevList += Get-Severity -Value $d.Temperature -YellowThreshold $tempYellow -RedThreshold $tempRed
         }
         if ($null -ne $d.Wear -and $d.Wear -gt 0) {
             $sevList += Get-Severity -Value $d.Wear -YellowThreshold 80 -RedThreshold 95
@@ -1567,10 +1571,19 @@ function Get-Recommendations {
                         Detail = "$($d.ReadErrorsUncorrected) uncorrected read errors detected."
                         Action = 'This disk may be failing. Back up data immediately and plan replacement.' })
             }
-            if ($null -ne $d.Temperature -and $d.Temperature -gt 55) {
+            # SSDs are safe up to ~70°C, HDDs should stay under 50-55°C
+            $isHDD = $d.MediaType -eq 'HDD'
+            $tempWarn = if ($isHDD) { 55 } else { 70 }
+            $tempCrit = if ($isHDD) { 60 } else { 80 }
+            if ($null -ne $d.Temperature -and $d.Temperature -gt $tempCrit) {
                 $recs.Add([PSCustomObject]@{ Severity = 'red'; Category = 'Disk Health'; Title = "Disk overheating: $($d.FriendlyName)"
-                        Detail = "Disk temperature at $($d.Temperature) C."
-                        Action = 'Check case airflow and cooling. High temperatures reduce disk lifespan.' })
+                        Detail = "Disk temperature at $($d.Temperature)°C (critical for $(if ($isHDD) { 'HDD' } else { 'SSD' }))."
+                        Action = 'Check case airflow and cooling. High temperatures cause throttling and reduce lifespan.' })
+            }
+            elseif ($null -ne $d.Temperature -and $d.Temperature -gt $tempWarn) {
+                $recs.Add([PSCustomObject]@{ Severity = 'yellow'; Category = 'Disk Health'; Title = "Disk running warm: $($d.FriendlyName)"
+                        Detail = "Disk temperature at $($d.Temperature)°C."
+                        Action = 'Monitor temperature. Consider improving airflow if it continues to rise under load.' })
             }
         }
     }
