@@ -1,165 +1,278 @@
-# Windows System Diagnostic Tool
+# System Diagnostic Tool
 
-A comprehensive PowerShell script that analyzes your Windows PC's performance and generates a beautiful, self-contained HTML report with actionable recommendations.
+A comprehensive system health diagnostic tool that generates beautiful HTML reports with actionable recommendations. Available for both **Windows** and **macOS**.
 
-![Dark Mode](https://img.shields.io/badge/theme-dark%20mode-0d1117?style=flat-square)
-![PowerShell 5.1+](https://img.shields.io/badge/PowerShell-5.1%2B-blue?style=flat-square)
-![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D6?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey.svg)
 
 ## Features
 
-### 24 Diagnostic Categories
-- **System Info** - OS version, hardware specs, uptime
-- **CPU** - Usage, per-core stats, top processes, sustained high CPU detection
-- **Memory** - RAM usage, page file, commit charge, top memory consumers
-- **Disk I/O** - Volume space, read/write rates, latency, queue length
-- **Disk Health** - SMART data, wear level, temperature (requires admin)
-- **Network** - Adapters, throughput, TCP connections
-- **Processes** - Top by CPU/memory, high handle counts
-- **Startup Programs** - Registry run keys, startup folder, scheduled tasks
-- **Event Log** - Critical/error events from last 24 hours (requires admin)
-- **Thermal** - Throttling detection, thermal events
-- **Power Plan** - Active plan, processor states, battery status
-- **Visual Effects** - Windows animation settings
-- **Services** - Disableable services with performance impact
-- **Storage** - Temp files, recycle bin, Storage Sense status
-- **Bloatware** - Preinstalled apps that can be removed
-- **Background Apps** - Apps running in the background
-- **Privacy/Telemetry** - Tracking features status
-- **Game Mode** - Gaming optimizations, Game DVR, GPU scheduling
-- **Browsers** - Installed browsers, memory usage
-- **Drivers** - Problem devices, outdated drivers
-- **Windows Update** - Pending updates, delivery optimization
-- **Windows Search** - Indexing service status
-- **Windows Defender** - Real-time protection, scan status
-- **Virtual Memory** - Page file configuration
+- **One-click diagnostics** - Run a single script to analyze your entire system
+- **Beautiful HTML reports** - Dark-themed, responsive reports that open in your browser
+- **Health scoring** - Overall system health rated as Good/Warning/Critical
+- **Actionable recommendations** - Specific steps to fix identified issues
+- **No installation required** - Just download and run
 
-### Report Features
-- **Self-contained HTML** - No external dependencies, works offline
-- **Dark/Light mode** - Toggle between themes (dark mode default)
-- **Severity indicators** - Green/yellow/red status badges
-- **Collapsible sections** - Expand/collapse all with one click
-- **Actionable recommendations** - Prioritized tips to improve performance
-- **Print-friendly** - Optimized for printing/PDF export
+### What's Analyzed
 
-## Installation
-
-No installation required. Just download and run:
-
-```powershell
-# Download the script
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YOUR_USERNAME/SystemDiagnostic/main/SystemDiagnostic.ps1" -OutFile "SystemDiagnostic.ps1"
-
-# Run it with elevated permissions
-.\SystemDiagnostic.ps1 -Elevate
-```
-
-Or clone the repository:
-
-```bash
-git clone https://github.com/YOUR_USERNAME/SystemDiagnostic.git
-cd SystemDiagnostic
-```
-
-## Usage
-
-### Basic Usage (Standard User)
-```powershell
-.\SystemDiagnostic.ps1
-```
-Runs with standard user privileges. Some diagnostics will be skipped.
-
-### Full Diagnostics (Administrator)
-```powershell
-.\SystemDiagnostic.ps1 -Elevate
-```
-Automatically elevates to administrator for full diagnostics including:
-- Disk Health (SMART data)
-- Event Log analysis
-- Thermal events
-
-### Custom Output Location
-```powershell
-.\SystemDiagnostic.ps1 -OutputPath "C:\Reports\MyDiagnostic.html"
-```
-
-### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `-Elevate` | Switch | Re-launch script as Administrator |
-| `-OutputPath` | String | Custom path for the HTML report (default: Desktop) |
+| Category | Windows | macOS |
+|----------|---------|-------|
+| System Information | ✅ | ✅ |
+| CPU Usage & Top Processes | ✅ | ✅ |
+| Memory/RAM Usage | ✅ | ✅ |
+| Disk Space & Health (SMART) | ✅ | ✅ |
+| Network Connections | ✅ | ✅ |
+| Running Processes | ✅ | ✅ |
+| Startup Programs | ✅ | ✅ |
+| Thermal/Throttling | ✅ | ✅ |
+| Battery Health (Laptops) | ✅ | ✅ |
+| Security Status | ✅ | ✅ |
+| Storage Cleanup | ✅ | ✅ |
+| Pending Updates | ✅ | ✅ |
+| Power Plan Settings | ✅ | - |
+| Visual Effects | ✅ | - |
+| Windows Services | ✅ | - |
+| Bloatware Detection | ✅ | - |
+| FileVault/SIP Status | - | ✅ |
 
 ## Screenshots
 
-### Dashboard
-The dashboard shows overall system health at a glance with color-coded cards.
+### Report Overview
+```
+┌─────────────────────────────────────────────────┐
+│     macOS System Diagnostic Report              │
+│     omri's MacBook Air - 2026-02-04             │
+│                                                 │
+│         ┌─────────────────────────┐             │
+│         │ Overall Health: Good    │             │
+│         └─────────────────────────┘             │
+│                                                 │
+│  ┌─ System Information ─────────── 0d 5h 12m ─┐ │
+│  │ Computer: MacBook Air                      │ │
+│  │ Chip: Apple M1 | Memory: 16 GB             │ │
+│  │ macOS: 26.2 | Uptime: 5 hours              │ │
+│  └────────────────────────────────────────────┘ │
+│                                                 │
+│  ┌─ CPU Diagnostics ──────────────────── 12% ─┐ │
+│  │ ████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 12%  │ │
+│  └────────────────────────────────────────────┘ │
+│                                                 │
+│  ┌─ Memory Diagnostics ───────────────── 45% ─┐ │
+│  │ ██████████████████░░░░░░░░░░░░░░░░░░ 45%  │ │
+│  └────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────┘
+```
 
-### Dark Mode (Default)
-Clean, modern dark theme that's easy on the eyes.
+## Installation
 
-### Light Mode
-Toggle to light mode with a single click.
+### Windows
 
-### Recommendations
-Prioritized, actionable recommendations sorted by severity.
+1. **Download** `SystemDiagnostic.ps1`
+2. **Right-click** the file and select "Run with PowerShell"
+
+   Or run from PowerShell:
+   ```powershell
+   .\SystemDiagnostic.ps1
+   ```
+
+3. **For full diagnostics** (SMART data, event logs), run as Administrator:
+   ```powershell
+   .\SystemDiagnostic.ps1 -Elevate
+   ```
+
+### macOS
+
+1. **Download** `SystemDiagnostic.sh`
+
+2. **Make executable** (first time only):
+   ```bash
+   chmod +x SystemDiagnostic.sh
+   ```
+
+3. **Run**:
+   ```bash
+   ./SystemDiagnostic.sh
+   ```
+
+   Or with bash:
+   ```bash
+   bash SystemDiagnostic.sh
+   ```
+
+4. **For full diagnostics** (thermal data), run with sudo:
+   ```bash
+   sudo ./SystemDiagnostic.sh
+   ```
+
+## Usage
+
+### Windows PowerShell Options
+
+```powershell
+# Basic run - generates report and opens in browser
+.\SystemDiagnostic.ps1
+
+# Run with admin privileges for full diagnostics
+.\SystemDiagnostic.ps1 -Elevate
+
+# Custom output path
+.\SystemDiagnostic.ps1 -OutputPath "C:\Reports\myreport.html"
+
+# Don't open browser after generating
+.\SystemDiagnostic.ps1 -SkipBrowserOpen
+
+# Custom sampling duration (1-30 seconds)
+.\SystemDiagnostic.ps1 -SampleDurationSeconds 5
+```
+
+### macOS Bash Options
+
+```bash
+# Basic run - generates report and opens in browser
+./SystemDiagnostic.sh
+
+# Custom output path
+./SystemDiagnostic.sh -o ~/Reports/myreport.html
+
+# Don't open browser after generating
+./SystemDiagnostic.sh -s
+
+# Show help
+./SystemDiagnostic.sh -h
+```
+
+## Output
+
+Reports are saved to your **Desktop** by default with the naming format:
+```
+SystemDiag_<ComputerName>_<Timestamp>.html
+```
+
+Example: `SystemDiag_MacBookAir_20260204_153045.html`
+
+## Understanding the Report
+
+### Severity Levels
+
+| Color | Level | Meaning |
+|-------|-------|---------|
+| 🟢 Green | Good | No issues detected |
+| 🟡 Yellow | Warning | Potential issues, optimization recommended |
+| 🔴 Red | Critical | Issues requiring attention |
+
+### Thresholds
+
+| Metric | Yellow | Red |
+|--------|--------|-----|
+| CPU Usage | 60% | 85% |
+| Memory Usage | 70% | 90% |
+| Disk Space Used | 80% | 90% |
+| System Uptime | 7 days | 30 days |
+| Startup Items | 10 items | 20 items |
+| Process Count | 200 | 400 |
+| TCP Connections | 200 | 500 |
+
+## Recommendations
+
+The report includes actionable recommendations for each issue found:
+
+### Example Recommendations
+
+**High CPU Usage**
+> CPU usage at 92%. Top process: chrome.
+>
+> *Action: Open Activity Monitor/Task Manager, sort by CPU, identify and close problematic apps.*
+
+**Disk Space Low**
+> Drive C: is 94% full (12 GB free).
+>
+> *Action: Run Disk Cleanup, clear temp files, uninstall unused programs.*
+
+**Firewall Disabled**
+> macOS Firewall is not enabled.
+>
+> *Action: System Settings > Network > Firewall > Turn On.*
 
 ## Requirements
 
-- **OS**: Windows 10 / Windows 11
-- **PowerShell**: 5.1 or later (pre-installed on Windows 10/11)
-- **Permissions**: Standard user (limited) or Administrator (full)
+### Windows
+- Windows 10/11
+- PowerShell 5.1 or later (included with Windows)
+- No additional software required
 
-## What Gets Analyzed
-
-| Category | Standard User | Administrator |
-|----------|:-------------:|:-------------:|
-| System Info | ✅ | ✅ |
-| CPU Usage | ✅ | ✅ |
-| Memory | ✅ | ✅ |
-| Disk I/O | ✅ | ✅ |
-| Disk Health (SMART) | ❌ | ✅ |
-| Network | ✅ | ✅ |
-| Processes | ✅ | ✅ |
-| Startup Programs | ✅ | ✅ |
-| Event Logs | ❌ | ✅ |
-| Thermal/Throttling | Partial | ✅ |
-| Power Plan | ✅ | ✅ |
-| Services | ✅ | ✅ |
-| Storage/Temp Files | ✅ | ✅ |
-| Bloatware Detection | ✅ | ✅ |
-| Privacy Settings | ✅ | ✅ |
-| Drivers | ✅ | ✅ |
-| Windows Update | ✅ | ✅ |
+### macOS
+- macOS 10.14 (Mojave) or later
+- Bash (included with macOS)
+- No additional software required
 
 ## Privacy & Security
 
-- **100% Local** - All analysis happens on your machine
-- **No Data Collection** - Nothing is sent anywhere
-- **No External Calls** - No internet required
-- **Read-Only** - Script only reads system information, never modifies anything
-- **Open Source** - Full source code available for review
+- **No data is sent anywhere** - Everything runs locally
+- **No installation** - No changes to your system
+- **Open source** - Review the code yourself
+- **Read-only** - Only reads system information, never modifies anything
+
+## Troubleshooting
+
+### Windows
+
+**"Running scripts is disabled on this system"**
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+.\SystemDiagnostic.ps1
+```
+
+**Some diagnostics show "Skipped"**
+
+Run with `-Elevate` flag for full diagnostics:
+```powershell
+.\SystemDiagnostic.ps1 -Elevate
+```
+
+### macOS
+
+**"Permission denied"**
+```bash
+chmod +x SystemDiagnostic.sh
+```
+
+**"command not found: bc"**
+
+The `bc` calculator should be included with macOS. If missing:
+```bash
+brew install bc
+```
+
+**Some values show "Unknown"**
+
+Run with `sudo` for additional diagnostics:
+```bash
+sudo ./SystemDiagnostic.sh
+```
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### Ideas for Contributions
+- Linux support
+- Additional diagnostic checks
+- Localization/translations
+- GUI wrapper application
+- Scheduled/automated runs
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - feel free to use, modify, and distribute.
 
 ## Acknowledgments
 
-- Built with PowerShell and vanilla HTML/CSS/JS
-- Icons from [Feather Icons](https://feathericons.com/) (MIT License)
-- Inspired by the need for a simple, comprehensive Windows diagnostic tool
+- Inspired by various system information tools
+- Built with native OS tools (PowerShell, Bash)
+- No external dependencies
 
 ---
 
-**Note**: This tool is for diagnostic purposes only. Always backup your system before making any changes based on the recommendations.
+**Made with ❤️ for system administrators, developers, and power users**
+
+*If this tool helped you, consider giving it a ⭐ on GitHub!*
