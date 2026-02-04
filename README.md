@@ -41,7 +41,7 @@ A comprehensive system health diagnostic tool that generates beautiful HTML repo
 ```
 ┌─────────────────────────────────────────────────┐
 │     macOS System Diagnostic Report              │
-│     omri's MacBook Air - 2026-02-04             │
+│     Jonny's MacBook Air - 2026-02-04             │
 │                                                 │
 │         ┌─────────────────────────┐             │
 │         │ Overall Health: Good    │             │
